@@ -1,3 +1,5 @@
+> NOTE: This fork fixes an issue where Mirage.js's fake XHR responses are rejected by Mithril's `m.request`. This is because the fake XHR `readystatechange` event doesn't include an event `target` [as a real event would](https://github.com/MithrilJS/mithril.js/blob/next/request/request.js#L113). We can return to the official library once this PR is merged: https://github.com/pretenderjs/FakeXMLHttpRequest/pull/34
+
 # FakeXMLHttpRequest [![Build Status](https://travis-ci.org/pretenderjs/FakeXMLHttpRequest.png?branch=master)](https://travis-ci.org/pretenderjs/FakeXMLHttpRequest)
 
 This library provide a fake XMLHttpRequest object for testing browser-based
