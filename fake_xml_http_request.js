@@ -455,6 +455,16 @@
         }
       }
 
+      // NOTE: NOT full spec compliance. Response can be other things.
+      // https://xhr.spec.whatwg.org/#the-response-attribute
+      if (this.responseType === "json") {
+        try {
+          this.response = JSON.parse(this.response);
+        } catch (e) {
+          // Unable to parse JSON
+        }
+      }
+
       if (this.async) {
         this._readyStateChange(FakeXMLHttpRequest.DONE);
       } else {

@@ -1,4 +1,9 @@
-> NOTE: This fork fixes an issue where Mirage.js's fake XHR responses are rejected by Mithril's `m.request`. This is because the fake XHR `readystatechange` event doesn't include an event `target` [as a real event would](https://github.com/MithrilJS/mithril.js/blob/next/request/request.js#L113). We can return to the official library once this PR is merged: https://github.com/pretenderjs/FakeXMLHttpRequest/pull/34
+> NOTE: This fork fixes 2 inconsistencies between faked XHRs and real ones.
+>
+> 1. `readystatechange` doesn't include `event.target` [as a real event would](https://github.com/MithrilJS/mithril.js/blob/next/request/request.js#L113). Fixed in this PR: https://github.com/pretenderjs/FakeXMLHttpRequest/pull/34
+> 2. `responseType:"json"` doesn'>t set parsed json at `xhr.response`. Fixed in this PR: https://github.com/pretenderjs/FakeXMLHttpRequest/pull/32
+>
+> These fixes allow Mirage.js to work with Mithril's `m.request`.
 
 # FakeXMLHttpRequest [![Build Status](https://travis-ci.org/pretenderjs/FakeXMLHttpRequest.png?branch=master)](https://travis-ci.org/pretenderjs/FakeXMLHttpRequest)
 
@@ -8,10 +13,12 @@ libraries. It is partially extracted (and in many places simplified) from
 [XMLHttpRequest specification](http://www.w3.org/TR/XMLHttpRequest/).
 
 ## Why not just use Sinon.JS?
+
 Sinon includes much more than _just_ a fake XHR object which is useful in
 situations where you may not need mocks, spies, stubs, or fake servers.
 
 ## How to use it
+
 In addition to matching the native XMLHttpRequest's API, FakeXMLHttpRequest
 adds a `respond` function that takes three arguments: a HTTP response status
 number, a headers object, and a text response body:
@@ -21,7 +28,7 @@ number, a headers object, and a text response body:
 import FakeXMLHttpRequest from "fake-xml-http-request";
 
 let xhr = new FakeXMLHttpRequest();
-xhr.respond(200, {"Content-Type": "application/json"}, '{"key":"value"}');
+xhr.respond(200, { "Content-Type": "application/json" }, '{"key":"value"}');
 xhr.status; // 200
 xhr.statusText; // "OK"
 xhr.responseText; // '{"key":"value"}'
@@ -36,6 +43,7 @@ recording, finding, or playing back requests. Libraries using FakeXMLHttpRequest
 should provide this behavior.
 
 ## Testing
+
 Tests are written in [QUnit](http://qunitjs.com/) and run through the
 [Karma test runner](http://karma-runner.github.io/0.10/index.html).
 
@@ -44,7 +52,6 @@ Run with:
 ```
 karma start
 ```
-
 
 ## Code of Conduct
 
